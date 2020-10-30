@@ -10,6 +10,7 @@ import SignOut from '../SignOut/SignOut'
 import ChangePassword from '../ChangePassword/ChangePassword'
 import LogCreate from '../LogCreate/LogCreate'
 import LogIndex from '../LogIndex/LogIndex'
+import LogShow from '../LogShow/LogShow'
 
 class App extends Component {
   constructor () {
@@ -65,6 +66,11 @@ class App extends Component {
         <div>
           <Route exact path="/" user={user} render={() => (
             <LogIndex user={user}/>
+          )}/>
+        </div>
+        <div>
+          <AuthenticatedRoute path="/logs/:id" user={user} render={props => (
+            <LogShow user={user} msgAlert={this.msgAlert} match={props.match}/>
           )}/>
         </div>
       </Fragment>
