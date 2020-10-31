@@ -22,14 +22,12 @@ class LogIndex extends React.Component {
       .catch(console.error)
   }
   render () {
+    console.log('This.State.logs here', this.state.logs)
     let jsx
-    // while the books are loading
     if (this.state.isLoaded === false) {
       jsx = <p>Loading...</p>
-    // if no books
     } else if (this.state.logs.length === 0) {
       jsx = <p>No Dog Logs currently available, please add one.</p>
-    // if there are books
     } else {
       jsx = (
         <ul>
@@ -41,7 +39,7 @@ class LogIndex extends React.Component {
     }
     return (
       <div className='logs-page'>
-        <h2>Logs Page</h2>
+        <h2>Dog Logs</h2>
         {jsx}
       </div>
     )

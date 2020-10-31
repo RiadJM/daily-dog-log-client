@@ -20,22 +20,16 @@ class LogCreate extends React.Component {
   }
 
   handleChange = (event) => {
-    // get value the user typed in
     const userInput = event.target.value
-    // get the name of the input they typed in
     const eventKey = event.target.name
-    // make a copy of the state
     const logCopy = Object.assign({}, this.state.log)
-    // updating the key in our copy with what the user typed
     logCopy[eventKey] = userInput
-    // updating the state with our new copy
     this.setState({ log: logCopy })
   }
 
   handleSubmit = (event) => {
     event.preventDefault()
     const handleLog = this.state.log
-    // make POST request to API /games route with book data
     axios({
       url: `${apiUrl}/logs`,
       method: 'POST',

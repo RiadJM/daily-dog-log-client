@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import apiUrl from '../../apiConfig'
+import { withRouter } from 'react-router-dom'
+import messages from '../AutoDismissAlert/messages'
 
 class LogShow extends React.Component {
   constructor (props) {
@@ -11,12 +13,10 @@ class LogShow extends React.Component {
       deleted: false
     }
   }
+
   componentDidMount () {
-    console.log('PROPS HERE', this.props)
     axios.get(apiUrl + '/logs/' + this.props.match.params.id)
       .then(response => {
-        // troubleshoot step 1 - are we getting a response from the API?
-        console.log(response)
         this.setState({
           isLoaded: true,
           log: response.data.log
@@ -24,6 +24,7 @@ class LogShow extends React.Component {
       })
       .catch(console.error)
   }
+
   destroy = (event) => {
     event.preventDefault()
     axios({
@@ -33,18 +34,27 @@ class LogShow extends React.Component {
         'Authorization': `Token token=${this.props.user.token}`
       }
     })
-      .then(() => this.setState({ deleted: true }))
+      .then(() => {
+        this.props.msgAlert({
+          heading: 'Successfully Deleted',
+          message: messages.deleteEventSuccess,
+          variant: 'success'
+        })
+        this.props.history.push('/')
+      })
+
       .catch(console.error)
   }
+
   render () {
-    // troubleshoot step 2 - is the render for BookShow.js being called?
-    console.log('TRYING TO SEE PROPS', this.props)
-    console.log('rendering LogShow.js')
     let jsx
-    // while the book is loading
     if (this.state.isLoaded === false) {
       jsx = <p>Loading...</p>
     } else {
+      let deleteButton = ''
+      if (this.state.log.owner === this.props.user._id) {
+        deleteButton = <button onClick={this.destroy}>Delete Log</button>
+      }
       jsx = (
         <div>
           <ul>
@@ -55,16 +65,16 @@ class LogShow extends React.Component {
             <li>{this.state.log.dinner}</li>
             <li>{this.state.log.exercise}</li>
           </ul>
-          <button onClick={this.destroy}>Delete Log</button>
+          {deleteButton}
         </div>
       )
     }
     return (
-      <div>
+      <div className='log-page'>
         <h2>Log Page</h2>
         {jsx}
       </div>
     )
   }
 }
-export default LogShow
+export default withRouter(LogShow)
