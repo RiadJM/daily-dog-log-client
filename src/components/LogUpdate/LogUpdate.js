@@ -2,9 +2,8 @@ import React from 'react'
 import axios from 'axios'
 import apiUrl from '../../apiConfig'
 import { Redirect } from 'react-router-dom'
-import messages from '../AutoDismissAlert/messages'
 
-class LogCreate extends React.Component {
+class LogUpdate extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -15,50 +14,56 @@ class LogCreate extends React.Component {
         dinner: '',
         exercise: ''
       },
-      createdLogId: ''
+      isLoaded: false,
+      isUpdated: false
     }
   }
-
-  handleChange = (event) => {
-    const userInput = event.target.value
-    const logKey = event.target.name
-    const logCopy = Object.assign({}, this.state.log)
-    logCopy[logKey] = userInput
-    this.setState({ log: logCopy })
-  }
-
-  handleSubmit = (event) => {
-    event.preventDefault()
-    const handleLog = this.state.log
-    axios({
-      url: `${apiUrl}/logs`,
-      method: 'POST',
-      headers: {
-        'Authorization': `Token token=${this.props.user.token}`
-      },
-      data: {
-        log: handleLog
-      }
-    })
-      .then((response) => {
-        this.setState({ createdLogId: response.data.log._id })
-        this.props.msgAlert({
-          heading: 'Successfully Created',
-          message: messages.createEventSuccess,
-          variant: 'success'
+  componentDidMount () {
+    axios.get(apiUrl + '/logs/' + this.props.match.params.id)
+      .then(response => {
+        this.setState({
+          isLoaded: true,
+          log: response.data.log
         })
       })
       .catch(console.error)
   }
-
+  handleChange = (event) => {
+    // get value the user typed in
+    const userInput = event.target.value
+    // get the name of the input they typed in
+    const logKey = event.target.name // "title" or "author"
+    // make a copy of the state (copy this javascript object)
+    const logCopy = Object.assign({}, this.state.log)
+    // updating the key in our copy with what the user typed
+    logCopy[logKey] = userInput
+    // updating the state with our new copy
+    this.setState({ log: logCopy })
+  }
+  handleSubmit = (event) => {
+    event.preventDefault()
+    const newLog = this.state.log
+    // make POST request to API /games route with book data
+    axios({
+      url: `${apiUrl}/logs/${this.props.match.params.id}`,
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Token token=${this.props.user.token}`
+      },
+      data: {
+        log: newLog
+      }
+    })
+      .then((response) => this.setState({ isUpdated: true }))
+      .catch(console.error)
+  }
   render () {
-    if (this.state.createdLogId !== '') {
+    if (this.state.isUpdated !== false) {
       return <Redirect to="/" />
     }
-
     return (
-      <div className='create'>
-        <h2>Log Create</h2>
+      <div className='log-update'>
+        <h2>Log Update</h2>
         <form onSubmit={this.handleSubmit}>
           <input name="name" type="text" placeholder="Name" value={this.state.log.name} onChange={this.handleChange}/>
           <input name="date" type="text" placeholder="Date" value={this.state.log.date} onChange={this.handleChange} />
@@ -71,5 +76,4 @@ class LogCreate extends React.Component {
     )
   }
 }
-
-export default LogCreate
+export default LogUpdate

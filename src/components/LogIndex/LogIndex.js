@@ -22,7 +22,6 @@ class LogIndex extends React.Component {
       .catch(console.error)
   }
   render () {
-    console.log('This.State.logs here', this.state.logs)
     let jsx
     if (this.state.isLoaded === false) {
       jsx = <p>Loading...</p>

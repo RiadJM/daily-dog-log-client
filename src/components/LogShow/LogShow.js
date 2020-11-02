@@ -58,12 +58,11 @@ class LogShow extends React.Component {
       jsx = (
         <div>
           <ul>
-            <li>{this.state.log._id}</li>
-            <li>{this.state.log.name}</li>
-            <li>{this.state.log.date}</li>
-            <li>{this.state.log.breakfast}</li>
-            <li>{this.state.log.dinner}</li>
-            <li>{this.state.log.exercise}</li>
+            <li>Name : {this.state.log.name}</li>
+            <li>Date: {this.state.log.date}</li>
+            <li>Breakfast: {this.state.log.breakfast}</li>
+            <li>Dinner: {this.state.log.dinner}</li>
+            <li>Exercise: {this.state.log.exercise}</li>
           </ul>
           {deleteButton}
         </div>

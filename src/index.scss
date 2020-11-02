@@ -1,5 +1,14 @@
 @import '~bootstrap/scss/bootstrap';
 
+.body {
+  background-image: url('./Mookie.JPG');
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
 .logs-page {
   color: rgb(0,0,0);
   font-family: 'Trebuchet MS', sans-serif;
@@ -16,6 +25,18 @@
   color: rgb(0,0,0);
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 25px;
+  text-align: center;
+}
+
+.create {
+  font-family: 'Trebuchet MS', sans-serif;
+  color: rgb(0,0,0);
+  text-align: center;
+}
+
+.event-update {
+  font-family: 'Trebuchet MS', sans-serif;
+  color: rgb(0,0,0);
   text-align: center;
 }
 

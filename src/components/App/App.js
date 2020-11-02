@@ -11,6 +11,7 @@ import ChangePassword from '../ChangePassword/ChangePassword'
 import LogCreate from '../LogCreate/LogCreate'
 import LogIndex from '../LogIndex/LogIndex'
 import LogShow from '../LogShow/LogShow'
+import LogUpdate from '../LogUpdate/LogUpdate'
 
 class App extends Component {
   constructor () {
@@ -71,6 +72,11 @@ class App extends Component {
         <div>
           <AuthenticatedRoute path="/logs/:id" user={user} render={props => (
             <LogShow user={user} msgAlert={this.msgAlert} match={props.match}/>
+          )}/>
+        </div>
+        <div>
+          <AuthenticatedRoute path="/logs/:id" user={user} render={props => (
+            <LogUpdate user={user} match={props.match}/>
           )}/>
         </div>
       </Fragment>
